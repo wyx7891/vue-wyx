@@ -37,3 +37,7 @@ __screenshots__/
 
 #node
 node_modules/
+.trae/rules/project_rules.md
+
+#trae
+.trae/
