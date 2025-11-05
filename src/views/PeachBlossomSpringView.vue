@@ -2,7 +2,7 @@
   <div class="page-wrapper">
     <header>
       <div class="header-content">
-        <h1><i class="fas fa-seedling"></i> 桃花源 <span>by Claude-3.7-Sonnet</span></h1>
+        <h1><i class="fas fa-seedling"></i> 桃花源 <span>by wyx卡卡传奇</span></h1>
       </div>
     </header>
 
@@ -25,12 +25,12 @@
           <div class="card">
             <div class="card-icon"><i class="fa-solid fa-code fa-bounce"></i></div>
             <h3>网站开发</h3>
-            <p>由Claude-3.7-Sonnet开发。</p>
+            <p>wyx卡卡传奇。</p>
           </div>
           <div class="card">
             <div class="card-icon"><i class="fa-solid fa-paintbrush fa-shake"></i></div>
             <h3>网页设计</h3>
-            <p>由Claude-3.7-Sonnet设计。</p>
+            <p>wyx卡卡传奇。</p>
           </div>
           <div class="card">
             <div class="card-icon"><i class="fa-solid fa-truck-front fa-beat"></i></div>
@@ -63,25 +63,25 @@
           </div>
           <div class="skills">
             <div class="skill">
-              <span class="skill-name">Claude-3.7-Sonnet</span>
+              <span class="skill-name">wyx卡卡传奇</span>
               <div class="skill-bar">
                 <div class="skill-level" style="width: 80%;"></div>
               </div>
             </div>
             <div class="skill">
-              <span class="skill-name">Qwen2.5-Coder-32B-Instruct</span>
+              <span class="skill-name">wyx卡卡传奇t</span>
               <div class="skill-bar">
                 <div class="skill-level" style="width: 10%;"></div>
               </div>
             </div>
             <div class="skill">
-              <span class="skill-name">Gemini-2.5-Pro-Preview(0506)</span>
+              <span class="skill-name">wyx卡卡传奇</span>
               <div class="skill-bar">
                 <div class="skill-level" style="width: 7%;"></div>
               </div>
             </div>
             <div class="skill">
-              <span class="skill-name">GPT-4o</span>
+              <span class="skill-name">wyx卡卡传奇</span>
               <div class="skill-bar">
                 <div class="skill-level" style="width: 3%;"></div>
               </div>

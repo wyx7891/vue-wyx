@@ -1,9 +1,9 @@
 <template>
   <div class="wyx-main-container">
     <Clock />
-    <MovingBox 
-      v-for="(box, index) in boxes" 
-      :key="index" 
+    <MovingBox
+      v-for="(box, index) in boxes"
+      :key="index"
       :initial-box="box"
       @redirect="handleRedirect"
     />
@@ -25,14 +25,14 @@ const specialRedirectUrl = '/wyx/peach-blossom-spring';
 
 onMounted(() => {
   const initialBoxes = [];
-  const NUM_ELEMENTS = 3;
+  const NUM_ELEMENTS = 5;
   const initialMargin = 100;
 
   for (let i = 0; i < NUM_ELEMENTS; i++) {
     const isSpecial = i === 0;
     initialBoxes.push({
       id: i,
-      text: isSpecial ? '桃源' : 'wyx',
+      text: isSpecial ? '桃源' : '卡卡',
       isSpecial: isSpecial,
       left: Math.random() * (window.innerWidth - initialMargin),
       top: Math.random() * (window.innerHeight - initialMargin),
