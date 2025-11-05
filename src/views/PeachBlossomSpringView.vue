@@ -253,11 +253,6 @@ const updateNavActiveState = (sectionId) => {
 };
 
 onMounted(() => {
-  const fontAwesomeScript = document.createElement('script');
-  fontAwesomeScript.src = 'https://kit.fontawesome.com/cb09ccbe88.js';
-  fontAwesomeScript.crossOrigin = 'anonymous';
-  document.head.appendChild(fontAwesomeScript);
-
   document.body.classList.add('loaded');
 
   const cards = document.querySelectorAll('.card');
