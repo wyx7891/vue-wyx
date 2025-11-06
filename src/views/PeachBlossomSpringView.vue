@@ -2,7 +2,7 @@
   <div class="page-wrapper">
     <header>
       <div class="header-content">
-        <h1><i class="fa-solid fa-seedling fa-bounce" style="color: #2cb67d;"></i> 桃花源 <span>by wyx卡卡传奇</span></h1>
+        <h1><i class="fa-solid fa-thumbs-up fa-spin-pulse" style="color: #b59e2c;"></i> 桃花源 <span>by wyx卡卡传奇</span></h1>
       </div>
     </header>
 
@@ -23,19 +23,19 @@
 
         <div class="feature-cards">
           <div class="card">
-            <div class="card-icon"><i class="fa-solid fa-code fa-bounce" style="color: #7f5af0;"></i></div>
-            <h3>网站开发</h3>
+            <div class="card-icon"><i class="fa-solid fa-handshake fa-spin fa-spin-reverse" style="color: #3ccc28;"></i></div>
+            <h3>汉江传奇</h3>
             <p>wyx卡卡传奇。</p>
           </div>
           <div class="card">
-            <div class="card-icon"><i class="fa-solid fa-paintbrush fa-shake" style="color: #ff7eb3;"></i></div>
-            <h3>网页设计</h3>
+            <div class="card-icon"><i class="fa-solid fa-paper-plane fa-bounce" style="color: #74C0FC;"></i></div>
+            <h3>卡卡！！！</h3>
             <p>wyx卡卡传奇。</p>
           </div>
           <div class="card">
             <div class="card-icon"><i class="fa-solid fa-truck fa-beat" style="color: #ffcc00;"></i></div>
             <h3>百吨王</h3>
-            <p>撞大运了！！！</p>
+            <p>犬王</p>
           </div>
         </div>
 
