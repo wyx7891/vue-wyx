@@ -2,16 +2,16 @@
   <div class="page-wrapper">
     <header>
       <div class="header-content">
-        <h1><i class="fas fa-seedling"></i> 桃花源 <span>by wyx卡卡传奇</span></h1>
+        <h1><i class="fa-solid fa-seedling fa-bounce" style="color: #2cb67d;"></i> 桃花源 <span>by wyx卡卡传奇</span></h1>
       </div>
     </header>
 
     <nav>
-      <a href="#home" @click.prevent="showSection('mainContent')"><i class="fas fa-home"></i> 首页</a>
-      <a href="#about" @click.prevent="showSection('about')"><i class="fas fa-user"></i> 关于我们</a>
-      <a href="#portfolio" @click.prevent="showSection('portfolio')"><i class="fas fa-images"></i> 作品集</a>
-      <a href="#thanks" @click.prevent="showSection('thanks')"><i class="fas fa-heart"></i> 特别鸣谢</a>
-      <a href="#contact" @click.prevent="showSection('contact')"><i class="fas fa-envelope"></i> 联系我们</a>
+      <a href="#home" @click.prevent="showSection('mainContent')"><i class="fa-solid fa-house"></i> 首页</a>
+      <a href="#about" @click.prevent="showSection('about')"><i class="fa-solid fa-user"></i> 关于我们</a>
+      <a href="#portfolio" @click.prevent="showSection('portfolio')"><i class="fa-solid fa-images"></i> 作品集</a>
+      <a href="#thanks" @click.prevent="showSection('thanks')"><i class="fa-solid fa-heart" style="color: #ff7eb3;"></i> 特别鸣谢</a>
+      <a href="#contact" @click.prevent="showSection('contact')"><i class="fa-solid fa-envelope"></i> 联系我们</a>
     </nav>
 
     <main>
@@ -23,17 +23,17 @@
 
         <div class="feature-cards">
           <div class="card">
-            <div class="card-icon"><i class="fa-solid fa-code fa-bounce"></i></div>
+            <div class="card-icon"><i class="fa-solid fa-code fa-bounce" style="color: #7f5af0;"></i></div>
             <h3>网站开发</h3>
             <p>wyx卡卡传奇。</p>
           </div>
           <div class="card">
-            <div class="card-icon"><i class="fa-solid fa-paintbrush fa-shake"></i></div>
+            <div class="card-icon"><i class="fa-solid fa-paintbrush fa-shake" style="color: #ff7eb3;"></i></div>
             <h3>网页设计</h3>
             <p>wyx卡卡传奇。</p>
           </div>
           <div class="card">
-            <div class="card-icon"><i class="fa-solid fa-truck-front fa-beat"></i></div>
+            <div class="card-icon"><i class="fa-solid fa-truck fa-beat" style="color: #ffcc00;"></i></div>
             <h3>百吨王</h3>
             <p>撞大运了！！！</p>
           </div>
@@ -129,7 +129,7 @@
 
         <div class="thanks-content">
           <div class="testimonial">
-            <div class="quote"><i class="fas fa-quote-left"></i></div>
+            <div class="quote"><i class="fa-solid fa-quote-left" style="color: #7f5af0;"></i></div>
             <p>感谢犬王！</p>
             <div class="testimonial-author">— 桃花源团队</div>
           </div>
@@ -137,7 +137,7 @@
           <div class="partners">
             <h3>使用工具</h3>
             <div class="partner-logos">
-              <div class="partner-logo"><i class="fab fa-github"></i></div>
+              <div class="partner-logo"><i class="fa-brands fa-github fa-beat-fade" style="color: #fffffe; font-size: 3rem;"></i></div>
               <div class="partner-logo"><img src="/wyx/space/img/claude.svg" alt="Claude Logo"></div>
             </div>
           </div>
@@ -153,15 +153,15 @@
         <div class="contact-container">
           <div class="contact-info">
             <div class="info-item">
-              <i class="fas fa-map-marker-alt"></i>
+              <i class="fa-solid fa-location-dot fa-bounce" style="color: #ff7eb3;"></i>
               <p>桃花源深处</p>
             </div>
             <div class="info-item">
-              <i class="fas fa-envelope"></i>
+              <i class="fa-solid fa-envelope fa-shake" style="color: #7f5af0;"></i>
               <p>wyxdjb18cm@outlook.com</p>
             </div>
             <div class="info-item">
-              <i class="fab fa-github"></i>
+              <i class="fa-brands fa-github fa-flip" style="color: #2cb67d;"></i>
               <p>https://github.com/wyx7891/html</p>
             </div>
           </div>
@@ -180,7 +180,7 @@
               <textarea placeholder="您的留言" rows="5" required></textarea>
             </div>
             <div class="form-group full-width">
-              <button type="submit">发送消息 <i class="fas fa-paper-plane"></i></button>
+              <button type="submit">发送消息 <i class="fa-solid fa-paper-plane"></i></button>
             </div>
           </form>
         </div>
@@ -198,13 +198,13 @@
     <footer>
       <div class="footer-content">
         <div class="footer-logo">
-          <h3><i class="fas fa-seedling"></i> 桃花源</h3>
+          <h3><i class="fa-solid fa-seedling" style="color: #2cb67d;"></i> 桃花源</h3>
           <p>创意无限 · 技术卓越</p>
         </div>
         <div class="footer-links">
-          <a href="#"><i class="fab fa-github"></i></a>
-          <a href="#"><i class="fab fa-weixin"></i></a>
-          <a href="#"><i class="fab fa-weibo"></i></a>
+          <a href="#"><i class="fa-brands fa-github fa-beat" style="color: #fffffe;"></i></a>
+          <a href="#"><i class="fa-brands fa-weixin fa-beat" style="color: #2cb67d;"></i></a>
+          <a href="#"><i class="fa-brands fa-weibo fa-beat" style="color: #ff7eb3;"></i></a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -214,7 +214,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
 const isModalVisible = ref(false);
@@ -227,7 +227,7 @@ const closeModal = () => {
   isModalVisible.value = false;
 };
 
-const showSection = (sectionId) => {
+const showSection = (sectionId: string) => {
   const sections = document.querySelectorAll('.content');
   sections.forEach(section => {
     section.classList.remove('active');
@@ -242,7 +242,7 @@ const showSection = (sectionId) => {
   updateNavActiveState(sectionId);
 };
 
-const updateNavActiveState = (sectionId) => {
+const updateNavActiveState = (sectionId: string) => {
   const navLinks = document.querySelectorAll('nav a');
   navLinks.forEach(link => {
     link.classList.remove('active');
@@ -257,15 +257,15 @@ onMounted(() => {
 
   const cards = document.querySelectorAll('.card');
   cards.forEach((card, index) => {
-    card.style.animationDelay = `${index * 0.2}s`;
+    (card as HTMLElement).style.animationDelay = `${index * 0.2}s`;
   });
 
   window.addEventListener('scroll', () => {
     const scrollPosition = window.scrollY;
     const sections = document.querySelectorAll('.content');
     sections.forEach(section => {
-      const sectionTop = section.offsetTop - 100;
-      const sectionHeight = section.offsetHeight;
+      const sectionTop = (section as HTMLElement).offsetTop - 100;
+      const sectionHeight = (section as HTMLElement).offsetHeight;
 
       if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
         updateNavActiveState(section.id);

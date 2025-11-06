@@ -1,6 +1,6 @@
 {
   "name": "wyx",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "engines": {
@@ -17,7 +17,6 @@
     "lint": "run-s lint:*"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^7.1.0",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"
   },
