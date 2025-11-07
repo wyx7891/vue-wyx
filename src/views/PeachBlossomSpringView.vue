@@ -69,7 +69,7 @@
               </div>
             </div>
             <div class="skill">
-              <span class="skill-name">wyx卡卡传奇t</span>
+              <span class="skill-name">wyx卡卡传奇</span>
               <div class="skill-bar">
                 <div class="skill-level" style="width: 10%;"></div>
               </div>
