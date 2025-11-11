@@ -92,7 +92,7 @@ header h1 span {
 /* 导航栏样式 */
 nav {
     background-color: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(7px);
     -webkit-backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
