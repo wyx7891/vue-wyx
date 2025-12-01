@@ -16,6 +16,11 @@ const router = createRouter({
       path: '/wyx/peach-blossom-spring',
       name: 'peach-blossom-spring',
       component: () => import('../views/PeachBlossomSpringView.vue')
+    },
+    {
+      path: '/check',
+      name: 'password-check',
+      component: () => import('../PasswordCheck.vue')
     }
   ]
 })

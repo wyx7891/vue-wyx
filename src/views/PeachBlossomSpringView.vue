@@ -215,9 +215,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeMount } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const isModalVisible = ref(false);
+
+// 验证访问权限
+onBeforeMount(() => {
+  // 检查本地存储中是否存在验证状态
+  const isAuthenticated = localStorage.getItem('auth') === 'true';
+
+  if (!isAuthenticated) {
+    // 如果未验证，重定向到检查页面
+    router.push('/check');
+  }
+});
 
 const showModal = () => {
   isModalVisible.value = true;
