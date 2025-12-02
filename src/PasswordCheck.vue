@@ -23,7 +23,7 @@
             class="password-input"
             :class="{ 'error': showError }"
             required
-            :aria-invalid="showError"
+            aria-invalid="showError"
             aria-describedby="error-message"
           />
           <div
@@ -84,7 +84,6 @@ let dots: Dot[] = [];
 const dotRadius = 3;
 const dotSpacing = 30;
 const mouseRadius = 60;
-let animationFrameId: number;
 
 // Mouse tracking
 const handleMouseMove = (e: MouseEvent) => {
@@ -94,59 +93,42 @@ const handleMouseMove = (e: MouseEvent) => {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top
     };
+
+    // Animate dots based on mouse position using GSAP
+    animateDotsWithMouse();
   }
 };
 
-// Track the last mouse position to optimize animations
-let lastMouseX = -1;
-let lastMouseY = -1;
-
-// Optimized continuous animation loop to handle dot movements
-const animate = () => {
-  // Only update if mouse position changed or we need to return dots to original position
-  const mouseMoved = lastMouseX !== mousePosition.value.x || lastMouseY !== mousePosition.value.y;
-  lastMouseX = mousePosition.value.x;
-  lastMouseY = mousePosition.value.y;
-
+// Animate dots based on mouse position
+const animateDotsWithMouse = () => {
   for (const dot of dots) {
     const dx = dot.x - mousePosition.value.x;
     const dy = dot.y - mousePosition.value.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     if (distance < mouseRadius) {
-      // Mouse is near this dot, push it away
+      // Mouse is near this dot, push it away with GSAP animation
       const angle = Math.atan2(dy, dx);
       const targetX = mousePosition.value.x + Math.cos(angle) * mouseRadius;
       const targetY = mousePosition.value.y + Math.sin(angle) * mouseRadius;
 
-      // Use GSAP to animate the dot away from mouse with stronger effect
+      // Use GSAP to animate the dot away from mouse
       gsap.to(dot.element, {
         cx: targetX,
         cy: targetY,
-        duration: 0.3,
-        ease: 'power2.out',
-        overwrite: 'auto'
+        duration: 0.5,
+        ease: 'elastic.out(1, 0.3)',
       });
     } else {
-      // Return to original position with GSAP with bouncier effect - only animate if needed
-      const currentX = parseFloat(dot.element.getAttribute('cx') || '0');
-      const currentY = parseFloat(dot.element.getAttribute('cy') || '0');
-      const isAtOriginalPosition = Math.abs(currentX - dot.originalX) < 0.1 &&
-                                   Math.abs(currentY - dot.originalY) < 0.1;
-
-      if (!isAtOriginalPosition) {
-        gsap.to(dot.element, {
-          cx: dot.originalX,
-          cy: dot.originalY,
-          duration: 1.0,
-          ease: 'elastic.out(1.2, 0.3)',
-          overwrite: 'auto'
-        });
-      }
+      // Return to original position with GSAP
+      gsap.to(dot.element, {
+        cx: dot.originalX,
+        cy: dot.originalY,
+        duration: 1.5,
+        ease: 'elastic.out(1, 0.3)',
+      });
     }
   }
-
-  animationFrameId = requestAnimationFrame(animate);
 };
 
 // Initialize dots using SVG
@@ -206,12 +188,6 @@ const initDots = async () => {
       });
     }
   }
-
-  // Start the animation loop if not already running
-  if (animationFrameId) {
-    cancelAnimationFrame(animationFrameId);
-  }
-  animationFrameId = requestAnimationFrame(animate);
 };
 
 // Password verification function
@@ -242,7 +218,7 @@ const verifyPassword = async () => {
         if (inputElement) {
           gsap.fromTo(inputElement,
             { x: -10 },
-            { x: 10, duration: 0.1, repeat: 10, yoyo: true, ease: 'power1.inOut' }
+            { x: 10, duration: 0.1, repeat: 3, yoyo: true, ease: 'power1.inOut' }
           );
         }
       }
@@ -275,11 +251,6 @@ onMounted(async () => {
 onUnmounted(() => {
   // Clean up event listeners
   window.removeEventListener('resize', initDots);
-
-  // Cancel animation frame
-  if (animationFrameId) {
-    cancelAnimationFrame(animationFrameId);
-  }
 });
 
 // Add some GSAP animations when component mounts
