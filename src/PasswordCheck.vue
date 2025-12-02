@@ -97,21 +97,24 @@ const handleMouseMove = (e: MouseEvent) => {
   }
 };
 
-// Continuous animation loop to handle dot movements
-const animate = () => {
-  animateDotsWithMouse();
-  animationFrameId = requestAnimationFrame(animate);
-};
+// Track the last mouse position to optimize animations
+let lastMouseX = -1;
+let lastMouseY = -1;
 
-// Animate dots based on mouse position
-const animateDotsWithMouse = () => {
+// Optimized continuous animation loop to handle dot movements
+const animate = () => {
+  // Only update if mouse position changed or we need to return dots to original position
+  const mouseMoved = lastMouseX !== mousePosition.value.x || lastMouseY !== mousePosition.value.y;
+  lastMouseX = mousePosition.value.x;
+  lastMouseY = mousePosition.value.y;
+
   for (const dot of dots) {
     const dx = dot.x - mousePosition.value.x;
     const dy = dot.y - mousePosition.value.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     if (distance < mouseRadius) {
-      // Mouse is near this dot, push it away with GSAP animation
+      // Mouse is near this dot, push it away
       const angle = Math.atan2(dy, dx);
       const targetX = mousePosition.value.x + Math.cos(angle) * mouseRadius;
       const targetY = mousePosition.value.y + Math.sin(angle) * mouseRadius;
@@ -120,19 +123,30 @@ const animateDotsWithMouse = () => {
       gsap.to(dot.element, {
         cx: targetX,
         cy: targetY,
-        duration: 0.4,
+        duration: 0.3,
         ease: 'power2.out',
+        overwrite: 'auto'
       });
     } else {
-      // Return to original position with GSAP with bouncier effect
-      gsap.to(dot.element, {
-        cx: dot.originalX,
-        cy: dot.originalY,
-        duration: 1.2,
-        ease: 'elastic.out(1.2, 0.3)',
-      });
+      // Return to original position with GSAP with bouncier effect - only animate if needed
+      const currentX = parseFloat(dot.element.getAttribute('cx') || '0');
+      const currentY = parseFloat(dot.element.getAttribute('cy') || '0');
+      const isAtOriginalPosition = Math.abs(currentX - dot.originalX) < 0.1 &&
+                                   Math.abs(currentY - dot.originalY) < 0.1;
+
+      if (!isAtOriginalPosition) {
+        gsap.to(dot.element, {
+          cx: dot.originalX,
+          cy: dot.originalY,
+          duration: 1.0,
+          ease: 'elastic.out(1.2, 0.3)',
+          overwrite: 'auto'
+        });
+      }
     }
   }
+
+  animationFrameId = requestAnimationFrame(animate);
 };
 
 // Initialize dots using SVG
