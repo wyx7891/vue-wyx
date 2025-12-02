@@ -106,6 +106,7 @@ The application has the following routes:
 - `/` - Redirects to `/wyx`
 - `/wyx` - Main view component
 - `/wyx/peach-blossom-spring` - Special view component
+- `/check` - Password check component
 
 ## Important Configuration Files
 
@@ -133,7 +134,32 @@ Browser DevTools:
 - Vue.js devtools recommended
 - Custom Object Formatter should be enabled in browser devtools
 
+## Component Descriptions
+
+### Main Components
+- **Clock.vue**: Displays a real-time updating clock with smooth animation
+- **MovingBox.vue**: A moving text element that bounces around the screen with color changes; has special behavior for clicking to access protected content
+- **WyxMainView.vue**: Main view containing the clock and multiple moving boxes
+- **PeachBlossomSpringView.vue**: Special content page that requires password authentication
+- **PasswordCheck.vue**: Authentication page with animated background and password verification using SHA-256 hashing
+
+### Routing
+The application uses Vue Router with the following routes:
+- `/` redirects to `/wyx`
+- `/wyx` displays the main content with a clock and moving boxes
+- `/wyx/peach-blossom-spring` displays the special "Peach Blossom Spring" page which requires authentication
+- `/check` is the password verification page
+
+### Authentication System
+The application implements a client-side authentication system:
+- Password is verified using SHA-256 hashing against a predefined hash
+- Successful authentication is stored in localStorage with the key 'auth'
+- Access to `/wyx/peach-blossom-spring` requires successful authentication
+- The special moving box on the main page requires 3 clicks within 3 seconds to access the protected content
+
 ## Notes
 - The project appears to have Chinese font support (Noto Sans SC)
 - The project includes a "Peach Blossom Spring" view, suggesting possible cultural or thematic content
 - Font assets (woff, woff2, ttf, eot) are explicitly included in the build configuration
+- The project uses an animated background with interactive physics-based dots in the password check component
+- Special CSS animations and effects are used throughout the application
