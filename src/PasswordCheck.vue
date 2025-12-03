@@ -84,6 +84,7 @@ let dots: Dot[] = [];
 const dotRadius = 3;
 const dotSpacing = 30;
 const mouseRadius = 60;
+let debounceTimeout: number | null = null;
 
 // Mouse tracking
 const handleMouseMove = (e: MouseEvent) => {
@@ -96,6 +97,16 @@ const handleMouseMove = (e: MouseEvent) => {
 
     // Animate dots based on mouse position using GSAP
     animateDotsWithMouse();
+
+    // Clear any existing timeout to restart the debounce
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
+    }
+
+    // Set a new timeout to restore dots after mouse stops moving
+    debounceTimeout = setTimeout(() => {
+      restoreDotsToOriginalPosition();
+    }, 100); // Wait for 100ms after mouse stops moving
   }
 };
 
@@ -119,8 +130,21 @@ const animateDotsWithMouse = () => {
         duration: 0.5,
         ease: 'elastic.out(1, 0.3)',
       });
-    } else {
-      // Return to original position with GSAP
+    }
+    // Don't restore to original position immediately when mouse is not near
+    // The restoration will happen after mouse stops moving via debounce mechanism
+  }
+};
+
+// Restore dots to their original positions after mouse stops moving
+const restoreDotsToOriginalPosition = () => {
+  for (const dot of dots) {
+    const dx = dot.x - mousePosition.value.x;
+    const dy = dot.y - mousePosition.value.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance >= mouseRadius) {
+      // Only restore dots that are not currently being pushed by mouse
       gsap.to(dot.element, {
         cx: dot.originalX,
         cy: dot.originalY,
@@ -251,6 +275,11 @@ onMounted(async () => {
 onUnmounted(() => {
   // Clean up event listeners
   window.removeEventListener('resize', initDots);
+
+  // Clear any existing debounce timeout
+  if (debounceTimeout) {
+    clearTimeout(debounceTimeout);
+  }
 });
 
 // Add some GSAP animations when component mounts
@@ -302,11 +331,17 @@ onMounted(() => {
   text-align: center;
   position: relative;
   z-index: 10;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .password-check-box:hover {
   transform: translateY(-5px);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.15),
+    0 0 25px rgba(76, 175, 80, 0.4),
+    0 0 50px rgba(76, 175, 80, 0.3),
+    0 0 80px rgba(76, 175, 80, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .password-check-box h2 {
