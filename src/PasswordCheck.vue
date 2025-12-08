@@ -10,6 +10,7 @@
     </div>
 
     <div class="password-check-box" role="form" aria-labelledby="form-title">
+      <div class="mouse-glow" :style="mouseGlowStyle"></div>
       <h2 id="form-title">访问验证</h2>
       <p>请输入访问密码</p>
       <form @submit.prevent="verifyPassword">
@@ -48,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue';
+import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import CryptoJS from 'crypto-js';
 import { gsap } from 'gsap';
@@ -70,6 +71,8 @@ const password = ref('');
 const showError = ref(false);
 const isVerifying = ref(false);
 const mousePosition = ref({ x: 0, y: 0 });
+const glowPosition = ref({ x: 0, y: 0 });
+const isMouseNearBox = ref(false);
 
 // Refs for DOM elements
 const containerRef = ref<HTMLElement | null>(null);
@@ -95,6 +98,20 @@ const handleMouseMove = (e: MouseEvent) => {
       y: e.clientY - rect.top
     };
 
+    // Update glow position
+    glowPosition.value = {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    };
+
+    // Check if mouse is near the password check box
+    updateMouseNearBoxStatus();
+
+    // Update spotlight position for password check box if mouse is inside the box
+    if (isMouseNearBox.value) {
+      updateSpotlightPosition(e);
+    }
+
     // Animate dots based on mouse position using GSAP
     animateDotsWithMouse();
 
@@ -107,6 +124,27 @@ const handleMouseMove = (e: MouseEvent) => {
     debounceTimeout = setTimeout(() => {
       restoreDotsToOriginalPosition();
     }, 100); // Wait for 100ms after mouse stops moving
+  }
+};
+
+// Update spotlight position for the password check box
+const updateSpotlightPosition = (e: MouseEvent) => {
+  if (containerRef.value) {
+    const rect = containerRef.value.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const boxElement = containerRef.value.querySelector('.password-check-box') as HTMLElement;
+    if (boxElement) {
+      const boxRect = boxElement.getBoundingClientRect();
+      // Calculate mouse position relative to the password check box element
+      const relativeX = mouseX - (boxRect.left - rect.left);
+      const relativeY = mouseY - (boxRect.top - rect.top);
+
+      // Set CSS variables for spotlight position
+      boxElement.style.setProperty('--mouse-x', `${relativeX}px`);
+      boxElement.style.setProperty('--mouse-y', `${relativeY}px`);
+    }
   }
 };
 
@@ -282,6 +320,57 @@ onUnmounted(() => {
   }
 });
 
+// Check if mouse is near the password check box
+const updateMouseNearBoxStatus = () => {
+  if (containerRef.value) {
+    const boxElement = containerRef.value.querySelector('.password-check-box');
+    if (boxElement) {
+      const boxRect = boxElement.getBoundingClientRect();
+      const containerRect = containerRef.value.getBoundingClientRect();
+
+      // Calculate mouse position relative to container
+      const mouseX = mousePosition.value.x;
+      const mouseY = mousePosition.value.y;
+
+      // Calculate box position relative to container
+      const boxX = boxRect.left - containerRect.left;
+      const boxY = boxRect.top - containerRect.top;
+
+      // Check if mouse is near the password check box (with some tolerance)
+      const tolerance = 50; // pixels
+      isMouseNearBox.value =
+        mouseX >= boxX - tolerance &&
+        mouseX <= boxX + boxRect.width + tolerance &&
+        mouseY >= boxY - tolerance &&
+        mouseY <= boxY + boxRect.height + tolerance;
+    }
+  }
+};
+
+// Mouse glow style computed property
+const mouseGlowStyle = computed(() => {
+  if (!isMouseNearBox.value) {
+    return {
+      display: 'none'
+    };
+  }
+
+  return {
+    display: 'block',
+    left: `${glowPosition.value.x}px`,
+    top: `${glowPosition.value.y}px`,
+    background: `radial-gradient(circle, rgba(76, 175, 80, 0.4) 0%, rgba(76, 175, 80, 0.2) 40%, rgba(76, 175, 80, 0) 70%)`,
+    width: '100px',
+    height: '100px',
+    position: 'absolute',
+    borderRadius: '50%',
+    transform: 'translate(-50%, -50%)',
+    pointerEvents: 'none',
+    zIndex: '5',
+    transition: 'opacity 0.3s ease'
+  };
+});
+
 // Add some GSAP animations when component mounts
 onMounted(() => {
   // Fade in animation for the form
@@ -321,6 +410,7 @@ onMounted(() => {
   height: 100%;
 }
 
+/* Spotlight effect implementation for password check box */
 .password-check-box {
   background: white;
   border-radius: 12px;
@@ -332,6 +422,34 @@ onMounted(() => {
   position: relative;
   z-index: 10;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+/* Create an overlay element for the spotlight effect */
+.password-check-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50px) var(--mouse-y, 50px),
+    rgba(76, 175, 80, 0.2) 0%,
+    rgba(76, 175, 80, 0.08) 20%,
+    rgba(76, 175, 80, 0.04) 40%,
+    rgba(76, 175, 80, 0.01) 70%,
+    transparent 90%
+  );
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  border-radius: 12px;
+  z-index: 1; /* Below the content but above background */
+}
+
+.password-check-box:hover::before {
+  opacity: 0.3; /* More visible when hovering over container */
 }
 
 .password-check-box:hover {
