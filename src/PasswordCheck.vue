@@ -24,7 +24,7 @@
             class="password-input"
             :class="{ 'error': showError }"
             required
-            aria-invalid="showError"
+            :aria-invalid="showError"
             aria-describedby="error-message"
           />
           <div
@@ -351,22 +351,22 @@ const updateMouseNearBoxStatus = () => {
 const mouseGlowStyle = computed(() => {
   if (!isMouseNearBox.value) {
     return {
-      display: 'none'
+      display: 'none' as const
     };
   }
 
   return {
-    display: 'block',
+    display: 'block' as const,
     left: `${glowPosition.value.x}px`,
     top: `${glowPosition.value.y}px`,
     background: `radial-gradient(circle, rgba(76, 175, 80, 0.4) 0%, rgba(76, 175, 80, 0.2) 40%, rgba(76, 175, 80, 0) 70%)`,
     width: '100px',
     height: '100px',
-    position: 'absolute',
+    position: 'absolute' as const,
     borderRadius: '50%',
     transform: 'translate(-50%, -50%)',
-    pointerEvents: 'none',
-    zIndex: '5',
+    pointerEvents: 'none' as const,
+    zIndex: 5,
     transition: 'opacity 0.3s ease'
   };
 });
