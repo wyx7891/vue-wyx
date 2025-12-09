@@ -1,11 +1,19 @@
 [build]
   command = "npm run build"
   publish = "dist"
+<<<<<<< HEAD
+=======
+  environment = { NODE_VERSION = "20.19.0" }
+>>>>>>> release
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
+<<<<<<< HEAD
   status = 200
 
 [context.production]
   NODE_VERSION = "20.19.0"
+=======
+  status = 200
+>>>>>>> release

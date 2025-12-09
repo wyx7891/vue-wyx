@@ -42,9 +42,4 @@ node_modules/
 #trae
 .trae/
 
-#chat
-gemini-conversation-1764582929458.json
-file/e.html
-file/gsap.js
-Prompt.txt
-/file
+file/
