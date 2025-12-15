@@ -267,7 +267,7 @@ const verifyPassword = async () => {
     if (inputHash === PASSWORD_HASH) {
       // Verification successful, store auth status in localStorage
       localStorage.setItem('auth', 'true');
-      // Redirect to target page
+      // Redirect to peach blossom spring page
       router.push('/wyx/peach-blossom-spring');
     } else {
       // Verification failed, show error

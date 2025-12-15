@@ -1,165 +1,84 @@
-# Qwen Code Context: Vue 3 Project
+# 项目上下文 (Project Context)
 
-## Project Overview
+## 项目概述
 
-This is a Vue 3 project built with Vite, TypeScript, and Vue Router. The project follows modern Vue development practices with TypeScript support, component-based architecture, and ES6 modules. The project name appears to be "wyx" and includes Font Awesome icons and Google Fonts integration.
+这是一个基于 **Vue 3** 和 **Vite** 构建的前端单页应用(SPA)。从路由配置和文件结构来看，该项目似乎专注于提供一个名为 "wyx" 的特定功能或内容展示，包含主页面、桃花源页面以及密码验证功能。
 
-### Key Technologies
-- **Vue 3** with Composition API
-- **TypeScript** for type safety
-- **Vite** as the build tool and development server
-- **Vue Router** for client-side routing
-- **ESLint + Oxlint** for code linting
-- **Font Awesome** for icons
-- **Google Fonts** (Noto Sans SC)
+## 技术栈
 
-### Project Structure
-```
-├── .vscode/                 # VS Code settings
-├── public/                  # Static assets
-├── src/                     # Source code
-│   ├── assets/              # Static assets (CSS, images, etc.)
-│   ├── components/          # Vue components
-│   ├── router/              # Router configuration
-│   ├── views/               # Page components
-│   ├── App.vue              # Root component
-│   └── main.ts              # Application entry point
-├── wyx/                     # Additional project directory
-├── .editorconfig            # Editor configuration
-├── .gitignore               # Git ignore rules
-├── eslint.config.ts         # ESLint configuration
-├── index.html               # HTML template
-├── package.json             # Project dependencies and scripts
-├── README.md                # Project documentation
-├── tsconfig.app.json        # TypeScript app configuration
-├── tsconfig.json            # TypeScript root configuration
-├── tsconfig.node.json       # TypeScript node configuration
-├── vite.config.ts           # Vite configuration
-└── QWEN.md                  # Current file
-```
+- **前端框架**: Vue 3 (with Composition API)
+- **构建工具**: Vite 7+
+- **类型检查**: TypeScript 5.9
+- **路由管理**: Vue Router 4
+- **UI 图标库**: Font Awesome
+- **动画库**: GSAP
+- **加密库**: CryptoJS
+- **开发工具**: Vite Plugin Vue DevTools
 
-## Building and Running
+## 开发与构建命令
 
-### Prerequisites
-- Node.js version: `^20.19.0 || >=22.12.0`
-- npm (or yarn/pnpm)
-
-### Setup Commands
-```sh
-# Install dependencies
+```bash
+# 安装依赖
 npm install
 
-# Start development server with hot-reload
+# 启动开发服务器 (localhost:5173)
 npm run dev
 
-# Build for production
+# 类型检查、编译并打包生产版本
 npm run build
 
-# Preview production build locally
+# 预览生产构建 (localhost:4173)
 npm run preview
 
-# Type-check the project
+# 运行类型检查
 npm run type-check
 
-# Lint and fix code issues
+# 使用 ESLint 和 Oxlint 进行代码格式化
 npm run lint
 ```
 
-### Linting
-The project uses multiple linters:
-- ESLint with Vue and TypeScript support
-- Oxlint for additional correctness checks
-- The `lint` script runs all linters sequentially
+## 项目结构
 
-## Development Conventions
+```
+wyx/
+├── public/                 # 静态资源文件夹
+├── src/                    # 源代码目录
+│   ├── assets/             # 静态资源 (CSS, 图片等)
+│   ├── components/         # Vue 组件
+│   ├── views/              # 页面组件 (与路由对应)
+│   │   ├── WyxMainView.vue # 主页面视图
+│   │   └── PeachBlossomSpringView.vue # 桃花源页面视图
+│   ├── router/index.ts     # Vue Router 路由配置
+│   ├── App.vue             # 根组件
+│   └── main.ts             # 应用入口文件
+├── wyx/                    # 可能是额外的静态资源目录
+├── .vscode/                # VSCode 配置
+├── .gitignore              # Git 忽略规则
+├── index.html              # HTML 模板
+├── vite.config.ts          # Vite 配置文件
+├── tsconfig.json           # TypeScript 配置
+├── package.json            # 项目配置和依赖
+└── README.md               # 项目说明文档
+```
 
-### Coding Style
-- TypeScript with strict type checking
-- Vue 3 Composition API with `<script setup>`
-- Component-based architecture
-- Vue Router for navigation
-- Modern CSS with scoped styles
-- Google Fonts and Font Awesome for UI elements
+## 关键特性
 
-### File Organization
-- Components are organized by feature/functionality
-- Views are placed in the `src/views/` directory
-- Router configuration is in `src/router/index.ts`
-- Assets are stored in `src/assets/`
-- Components are in `src/components/`
+- **现代前端技术栈**: 基于 Vue 3 和 Vite，提供快速的开发体验。
+- **TypeScript 支持**: 提供静态类型检查，增强代码健壮性。
+- **状态管理**: 使用 Vue Router 进行页面导航和状态管理。
+- **图标支持**: 集成了 Font Awesome 图标库。
+- **动画支持**: 集成了 GSAP 动画库，可用于创建高级动画效果。
+- **密码保护**: 包含一个独立的 `PasswordCheck.vue` 组件用于验证访问权限。
+- **部署就绪**: 包含 Netlify 部署配置，支持单页应用的正确路由回退。
 
-### Component Structure
-- `.vue` files contain template, script, and style sections
-- Single-file components with optional scoped CSS
-- TypeScript type definitions for props and events
-- Use of Vue's Composition API with `<script setup>`
+## 路由配置
 
-### Project-Specific Features
-- Google Fonts integration (Noto Sans SC font family)
-- Font Awesome icon integration via CDN
-- Preconnect links in index.html for performance
-- Dynamic imports for route components (code splitting)
-- Vue DevTools integration in development
+- `/` -> 重定向到 `/wyx`
+- `/wyx` -> 显示 `WyxMainView.vue`
+- `/wyx/peach-blossom-spring` -> 显示 `PeachBlossomSpringView.vue`
+- `/check` -> 显示 `PasswordCheck.vue`
 
-## Routing
-The application has the following routes:
-- `/` - Redirects to `/wyx`
-- `/wyx` - Main view component
-- `/wyx/peach-blossom-spring` - Special view component
-- `/check` - Password check component
+## 环境要求
 
-## Important Configuration Files
-
-### Vite Configuration (`vite.config.ts`)
-- Uses Vue and Vue JSX plugins
-- Includes Vue DevTools plugin
-- Configures path alias `@` to `src/`
-- Includes font file types in assets
-
-### TypeScript Configuration
-- Separate configs for app (`tsconfig.app.json`) and node (`tsconfig.node.json`)
-- Path alias `@/*` maps to `./src/*`
-- Uses `@vue/tsconfig` for DOM types
-
-### ESLint Configuration
-- Vue-specific linting rules
-- TypeScript support
-- Oxlint integration for additional checks
-- Ignores build/dist directories
-
-## IDE Setup
-Recommended: VS Code with Vue (Official) extension (and disable Vetur)
-
-Browser DevTools:
-- Vue.js devtools recommended
-- Custom Object Formatter should be enabled in browser devtools
-
-## Component Descriptions
-
-### Main Components
-- **Clock.vue**: Displays a real-time updating clock with smooth animation
-- **MovingBox.vue**: A moving text element that bounces around the screen with color changes; has special behavior for clicking to access protected content
-- **WyxMainView.vue**: Main view containing the clock and multiple moving boxes
-- **PeachBlossomSpringView.vue**: Special content page that requires password authentication
-- **PasswordCheck.vue**: Authentication page with animated background and password verification using SHA-256 hashing
-
-### Routing
-The application uses Vue Router with the following routes:
-- `/` redirects to `/wyx`
-- `/wyx` displays the main content with a clock and moving boxes
-- `/wyx/peach-blossom-spring` displays the special "Peach Blossom Spring" page which requires authentication
-- `/check` is the password verification page
-
-### Authentication System
-The application implements a client-side authentication system:
-- Password is verified using SHA-256 hashing against a predefined hash
-- Successful authentication is stored in localStorage with the key 'auth'
-- Access to `/wyx/peach-blossom-spring` requires successful authentication
-- The special moving box on the main page requires 3 clicks within 3 seconds to access the protected content
-
-## Notes
-- The project appears to have Chinese font support (Noto Sans SC)
-- The project includes a "Peach Blossom Spring" view, suggesting possible cultural or thematic content
-- Font assets (woff, woff2, ttf, eot) are explicitly included in the build configuration
-- The project uses an animated background with interactive physics-based dots in the password check component
-- Special CSS animations and effects are used throughout the application
+- **Node.js**: ^20.19.0 或 >=22.12.0
+- **npm**: 最新稳定版

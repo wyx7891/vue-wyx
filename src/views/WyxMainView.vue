@@ -48,7 +48,16 @@ onMounted(() => {
 
 const handleRedirect = (url, isSpecial) => {
   if (isSpecial) {
-    router.push(url);
+    // 对特殊链接（桃花源）进行认证检查
+    const isAuthenticated = localStorage.getItem('auth') === 'true';
+
+    if (isAuthenticated) {
+      // 已认证，直接跳转到桃花源
+      router.push(url);
+    } else {
+      // 未认证，跳转到验证页面
+      router.push('/check');
+    }
   } else {
     window.open(url, '_blank');
   }
