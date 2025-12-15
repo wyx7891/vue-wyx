@@ -12,6 +12,7 @@
       <a href="#portfolio" @click.prevent="showSection('portfolio')"><i class="fa-solid fa-images"></i> 作品集</a>
       <a href="#thanks" @click.prevent="showSection('thanks')"><i class="fa-solid fa-heart" style="color: #ff7eb3;"></i> 特别鸣谢</a>
       <a href="#contact" @click.prevent="showSection('contact')"><i class="fa-solid fa-envelope"></i> 联系我们</a>
+      <a href="#" @click.prevent="logout()" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> 退出登录</a>
     </nav>
 
     <main>
@@ -238,6 +239,14 @@ const showModal = () => {
 
 const closeModal = () => {
   isModalVisible.value = false;
+};
+
+const logout = () => {
+  // 将localStorage中的auth字段设置为false
+  localStorage.setItem('auth', 'false');
+
+  // 重定向到检查页面
+  router.push('/check');
 };
 
 const showSection = (sectionId: string) => {
