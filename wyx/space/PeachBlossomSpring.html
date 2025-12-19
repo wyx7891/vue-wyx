@@ -10,6 +10,41 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* 为HTML文件添加图片加载错误处理样式 */
+        .portfolio-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* 图片加载和错误处理 */
+        img.showcase-image[loading],
+        img[loading] {
+            opacity: 0.6;
+        }
+
+        img.showcase-image[loaded],
+        img[loaded] {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        img.showcase-image[error],
+        img[error] {
+            background-color: rgba(128, 128, 128, 0.3);
+            min-height: 200px; /* 确保在加载失败时也有一定高度 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
     <div class="page-wrapper">
@@ -53,7 +88,7 @@
                 </div>
                 
                 <div class="showcase">
-                    <img src="img/wyx.jpg" alt="项目展示" class="showcase-image">
+                    <img src="https://free.picui.cn/free/2025/12/17/6942626ed52cd.jpg" alt="项目展示" class="showcase-image">
                     <div class="showcase-overlay">
                         <h3>创意无限</h3>
                         <p>探索更多精彩内容</p>
@@ -111,21 +146,21 @@
                 
                 <div class="portfolio-grid">
                     <div class="portfolio-item">
-                        <img src="img/wyx.jpg" alt="项目1">
+                        <img src="https://free.picui.cn/free/2025/12/17/6942626ed52cd.jpg" alt="项目1">
                         <div class="portfolio-overlay">
                             <h3>创意网站设计</h3>
                             <p>Web开发 / UI设计</p>
                         </div>
                     </div>
                     <div class="portfolio-item">
-                        <img src="img/wyx.jpg" alt="项目2">
+                        <img src="https://free.picui.cn/free/2025/12/17/6942626ed52cd.jpg" alt="项目2">
                         <div class="portfolio-overlay">
                             <h3>移动应用界面</h3>
                             <p>App开发 / UX设计</p>
                         </div>
                     </div>
                     <div class="portfolio-item">
-                        <img src="img/wyx.jpg" alt="项目3">
+                        <img src="https://free.picui.cn/free/2025/12/17/6942626ed52cd.jpg" alt="项目3">
                         <div class="portfolio-overlay">
                             <h3>品牌标识设计</h3>
                             <p>平面设计 / 品牌推广</p>

@@ -41,7 +41,7 @@
         </div>
 
         <div class="showcase">
-          <img src="/wyx/space/img/wyx.jpg" alt="项目展示" class="showcase-image">
+          <img src="https://free.picui.cn/free/2025/12/17/6942626ed52cd.jpg" alt="项目展示" class="showcase-image" loading="lazy" @load="onImageLoad" @error="onImageError">
           <div class="showcase-overlay">
             <h3>创意无限</h3>
             <p>探索更多精彩内容</p>
@@ -99,21 +99,21 @@
 
         <div class="portfolio-grid">
           <div class="portfolio-item">
-            <img src="/wyx/space/img/wyx.jpg" alt="项目1">
+            <img src="https://free.picui.cn/free/2025/12/17/6942626ed52cd.jpg" alt="项目1" loading="lazy" @load="onImageLoad" @error="onImageError">
             <div class="portfolio-overlay">
               <h3>创意网站设计</h3>
               <p>Web开发 / UI设计</p>
             </div>
           </div>
           <div class="portfolio-item">
-            <img src="/wyx/space/img/wyx.jpg" alt="项目2">
+            <img src="https://free.picui.cn/free/2025/12/17/6942626ed52cd.jpg" alt="项目2" loading="lazy" @load="onImageLoad" @error="onImageError">
             <div class="portfolio-overlay">
               <h3>移动应用界面</h3>
               <p>App开发 / UX设计</p>
             </div>
           </div>
           <div class="portfolio-item">
-            <img src="/wyx/space/img/wyx.jpg" alt="项目3">
+            <img src="https://free.picui.cn/free/2025/12/17/6942626ed52cd.jpg" alt="项目3" loading="lazy" @load="onImageLoad" @error="onImageError">
             <div class="portfolio-overlay">
               <h3>品牌标识设计</h3>
               <p>平面设计 / 品牌推广</p>
@@ -272,6 +272,22 @@ const updateNavActiveState = (sectionId: string) => {
       link.classList.add('active');
     }
   });
+};
+
+const onImageLoad = (event: Event) => {
+  console.log('Image loaded successfully:', (event.target as HTMLImageElement).src);
+  // 设置加载完成的属性
+  (event.target as HTMLImageElement).setAttribute('loaded', '');
+  (event.target as HTMLImageElement).removeAttribute('loading');
+};
+
+const onImageError = (event: Event) => {
+  console.error('Image failed to load:', (event.target as HTMLImageElement).src);
+  // 移除loading属性，添加error属性
+  (event.target as HTMLImageElement).removeAttribute('loading');
+  (event.target as HTMLImageElement).setAttribute('error', '');
+  // 设置备用图片或处理错误
+  (event.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300/cccccc/666666?text=Image+Not+Found';
 };
 
 onMounted(() => {

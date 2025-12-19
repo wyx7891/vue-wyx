@@ -407,6 +407,27 @@ main {
     transform: scale(1.1);
 }
 
+/* 图片加载和错误处理 */
+img.showcase-image[loading],
+img[loading] {
+    opacity: 0.6;
+}
+
+img.showcase-image[loaded],
+img[loaded] {
+    opacity: 1;
+    transform: scale(1);
+}
+
+img.showcase-image[error],
+img[error] {
+    background-color: rgba(128, 128, 128, 0.3);
+    min-height: 200px; /* 确保在加载失败时也有一定高度 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .portfolio-overlay {
     position: absolute;
     bottom: 0;
