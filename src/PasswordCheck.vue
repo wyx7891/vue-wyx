@@ -9,8 +9,14 @@
       <svg class="dots-svg" ref="svgRef" width="100%" height="100%"></svg>
     </div>
 
-    <div class="password-check-box" role="form" aria-labelledby="form-title">
-      <div class="mouse-glow" :style="mouseGlowStyle"></div>
+    <div
+      class="password-check-box"
+      role="form"
+      aria-labelledby="form-title"
+      @mouseenter="spotlightVisible = true"
+      @mouseleave="spotlightVisible = false"
+    >
+      <div class="mouse-spotlight" :style="spotlightStyle"></div>
       <h2 id="form-title">访问验证</h2>
       <p>请输入访问密码</p>
       <form @submit.prevent="verifyPassword">
@@ -73,6 +79,7 @@ const isVerifying = ref(false);
 const mousePosition = ref({ x: 0, y: 0 });
 const glowPosition = ref({ x: 0, y: 0 });
 const isMouseNearBox = ref(false);
+const spotlightVisible = ref(false);
 
 // Refs for DOM elements
 const containerRef = ref<HTMLElement | null>(null);
@@ -347,27 +354,42 @@ const updateMouseNearBoxStatus = () => {
   }
 };
 
-// Mouse glow style computed property
-const mouseGlowStyle = computed(() => {
-  if (!isMouseNearBox.value) {
+// Spotlight style computed property
+const spotlightStyle = computed(() => {
+  if (!spotlightVisible.value || !containerRef.value) {
     return {
       display: 'none' as const
     };
   }
 
+  // 获取密码框元素的位置信息
+  const boxElement = containerRef.value.querySelector('.password-check-box') as HTMLElement;
+  if (!boxElement) {
+    return {
+      display: 'none' as const
+    };
+  }
+
+  const boxRect = boxElement.getBoundingClientRect();
+  const containerRect = containerRef.value.getBoundingClientRect();
+
+  // 计算鼠标相对于密码框的位置
+  const relativeLeft = mousePosition.value.x - (boxRect.left - containerRect.left);
+  const relativeTop = mousePosition.value.y - (boxRect.top - containerRect.top);
+
   return {
     display: 'block' as const,
-    left: `${glowPosition.value.x}px`,
-    top: `${glowPosition.value.y}px`,
+    left: `${relativeLeft}px`,
+    top: `${relativeTop}px`,
     background: `radial-gradient(circle, rgba(76, 175, 80, 0.4) 0%, rgba(76, 175, 80, 0.2) 40%, rgba(76, 175, 80, 0) 70%)`,
-    width: '100px',
-    height: '100px',
+    width: '120px',
+    height: '120px',
     position: 'absolute' as const,
     borderRadius: '50%',
     transform: 'translate(-50%, -50%)',
     pointerEvents: 'none' as const,
-    zIndex: 5,
-    transition: 'opacity 0.3s ease'
+    zIndex: 1,
+    transition: 'opacity 0.2s ease'
   };
 });
 
@@ -425,31 +447,19 @@ onMounted(() => {
   overflow: hidden;
 }
 
-/* Create an overlay element for the spotlight effect */
-.password-check-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-    circle at var(--mouse-x, 50px) var(--mouse-y, 50px),
-    rgba(76, 175, 80, 0.2) 0%,
-    rgba(76, 175, 80, 0.08) 20%,
-    rgba(76, 175, 80, 0.04) 40%,
-    rgba(76, 175, 80, 0.01) 70%,
-    transparent 90%
-  );
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  pointer-events: none;
+/* 恢复原始样式并确保相对定位 */
+.password-check-box {
+  background: white;
   border-radius: 12px;
-  z-index: 1; /* Below the content but above background */
-}
-
-.password-check-box:hover::before {
-  opacity: 0.3; /* More visible when hovering over container */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
 }
 
 .password-check-box:hover {
@@ -460,6 +470,15 @@ onMounted(() => {
     0 0 50px rgba(76, 175, 80, 0.3),
     0 0 80px rgba(76, 175, 80, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Spotlight effect element */
+.mouse-spotlight {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: screen;
 }
 
 .password-check-box h2 {
