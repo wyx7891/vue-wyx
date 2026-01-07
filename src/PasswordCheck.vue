@@ -68,7 +68,9 @@ interface Dot {
   originalY: number;
   radius: number;
   element: SVGCircleElement;
-  tl: gsap.core.Timeline;
+  vx: number; // 速度 x
+  vy: number; // 速度 y
+  isDisplaced: boolean; // 是否被推开
 }
 
 // Define reactive references
@@ -77,7 +79,6 @@ const password = ref('');
 const showError = ref(false);
 const isVerifying = ref(false);
 const mousePosition = ref({ x: 0, y: 0 });
-const glowPosition = ref({ x: 0, y: 0 });
 const isMouseNearBox = ref(false);
 const spotlightVisible = ref(false);
 
@@ -93,20 +94,18 @@ const PASSWORD_HASH = '47044e633d52986f801fb44ddb7371b42579de0b6f231298c862f029e
 let dots: Dot[] = [];
 const dotRadius = 3;
 const dotSpacing = 30;
-const mouseRadius = 60;
-let debounceTimeout: number | null = null;
+const mouseRadius = 80; // 鼠标影响半径
+const pushForce = 15; // 推开力度
+const returnSpeed = 0.08; // 回弹速度
+const friction = 0.85; // 摩擦系数
+let animationFrameId: number | null = null;
+let isAnimating = false;
 
 // Mouse tracking
 const handleMouseMove = (e: MouseEvent) => {
   if (containerRef.value) {
     const rect = containerRef.value.getBoundingClientRect();
     mousePosition.value = {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    };
-
-    // Update glow position
-    glowPosition.value = {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top
     };
@@ -119,18 +118,8 @@ const handleMouseMove = (e: MouseEvent) => {
       updateSpotlightPosition(e);
     }
 
-    // Animate dots based on mouse position using GSAP
-    animateDotsWithMouse();
-
-    // Clear any existing timeout to restart the debounce
-    if (debounceTimeout) {
-      clearTimeout(debounceTimeout);
-    }
-
-    // Set a new timeout to restore dots after mouse stops moving
-    debounceTimeout = setTimeout(() => {
-      restoreDotsToOriginalPosition();
-    }, 100); // Wait for 100ms after mouse stops moving
+    // 启动动画循环（如果尚未运行）
+    startAnimationLoop();
   }
 };
 
@@ -155,54 +144,85 @@ const updateSpotlightPosition = (e: MouseEvent) => {
   }
 };
 
-// Animate dots based on mouse position
-const animateDotsWithMouse = () => {
-  for (const dot of dots) {
-    const dx = dot.x - mousePosition.value.x;
-    const dy = dot.y - mousePosition.value.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance < mouseRadius) {
-      // Mouse is near this dot, push it away with GSAP animation
-      const angle = Math.atan2(dy, dx);
-      const targetX = mousePosition.value.x + Math.cos(angle) * mouseRadius;
-      const targetY = mousePosition.value.y + Math.sin(angle) * mouseRadius;
-
-      // Use GSAP to animate the dot away from mouse
-      gsap.to(dot.element, {
-        cx: targetX,
-        cy: targetY,
-        duration: 0.5,
-        ease: 'elastic.out(1, 0.3)',
-      });
-    }
-    // Don't restore to original position immediately when mouse is not near
-    // The restoration will happen after mouse stops moving via debounce mechanism
+// 启动动画循环
+const startAnimationLoop = () => {
+  if (!isAnimating) {
+    isAnimating = true;
+    animationLoop();
   }
 };
 
-// Restore dots to their original positions after mouse stops moving
-const restoreDotsToOriginalPosition = () => {
+// 停止动画循环
+const stopAnimationLoop = () => {
+  if (animationFrameId !== null) {
+    cancelAnimationFrame(animationFrameId);
+    animationFrameId = null;
+  }
+  isAnimating = false;
+};
+
+// 主动画循环 - 使用 requestAnimationFrame 实现流畅动画
+const animationLoop = () => {
+  let hasMovement = false;
+  const mouseX = mousePosition.value.x;
+  const mouseY = mousePosition.value.y;
+
   for (const dot of dots) {
-    const dx = dot.x - mousePosition.value.x;
-    const dy = dot.y - mousePosition.value.y;
+    const dx = dot.x - mouseX;
+    const dy = dot.y - mouseY;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    if (distance >= mouseRadius) {
-      // Only restore dots that are not currently being pushed by mouse
-      gsap.to(dot.element, {
-        cx: dot.originalX,
-        cy: dot.originalY,
-        duration: 1.5,
-        ease: 'elastic.out(1, 0.3)',
-      });
+    // 鼠标在影响范围内，推开点
+    if (distance < mouseRadius && distance > 0) {
+      const angle = Math.atan2(dy, dx);
+      const force = (mouseRadius - distance) / mouseRadius * pushForce;
+      dot.vx += Math.cos(angle) * force;
+      dot.vy += Math.sin(angle) * force;
+      dot.isDisplaced = true;
     }
+
+    // 应用摩擦力
+    dot.vx *= friction;
+    dot.vy *= friction;
+
+    // 回弹到原始位置
+    const returnDx = dot.originalX - dot.x;
+    const returnDy = dot.originalY - dot.y;
+    dot.vx += returnDx * returnSpeed;
+    dot.vy += returnDy * returnSpeed;
+
+    // 更新位置
+    dot.x += dot.vx;
+    dot.y += dot.vy;
+
+    // 更新 SVG 元素位置
+    dot.element.setAttribute('cx', dot.x.toString());
+    dot.element.setAttribute('cy', dot.y.toString());
+
+    // 检查是否还有明显移动
+    const totalVelocity = Math.abs(dot.vx) + Math.abs(dot.vy);
+    const distanceFromOrigin = Math.sqrt(returnDx * returnDx + returnDy * returnDy);
+    if (totalVelocity > 0.01 || distanceFromOrigin > 0.5) {
+      hasMovement = true;
+    }
+  }
+
+  // 如果还有移动，继续动画循环
+  if (hasMovement) {
+    animationFrameId = requestAnimationFrame(animationLoop);
+  } else {
+    // 所有点都静止了，停止动画循环
+    isAnimating = false;
+    animationFrameId = null;
   }
 };
 
 // Initialize dots using SVG
 const initDots = async () => {
   if (!svgRef.value || !containerRef.value) return;
+
+  // 停止现有动画
+  stopAnimationLoop();
 
   // Clear previous dots
   while (svgRef.value.firstChild) {
@@ -234,18 +254,6 @@ const initDots = async () => {
 
       svgRef.value.appendChild(circle);
 
-      // Create GSAP timeline for each dot
-      const tl = gsap.timeline({ paused: true });
-      tl.to(circle, {
-        attr: { r: dotRadius * 1.5 },
-        duration: 0.5,
-        ease: 'power2.out'
-      }).to(circle, {
-        attr: { r: dotRadius },
-        duration: 0.5,
-        ease: 'power2.in'
-      });
-
       dots.push({
         x: dotX,
         y: dotY,
@@ -253,7 +261,9 @@ const initDots = async () => {
         originalY: dotY,
         radius: dotRadius,
         element: circle,
-        tl
+        vx: 0,
+        vy: 0,
+        isDisplaced: false
       });
     }
   }
@@ -321,10 +331,8 @@ onUnmounted(() => {
   // Clean up event listeners
   window.removeEventListener('resize', initDots);
 
-  // Clear any existing debounce timeout
-  if (debounceTimeout) {
-    clearTimeout(debounceTimeout);
-  }
+  // 停止动画循环
+  stopAnimationLoop();
 });
 
 // Check if mouse is near the password check box
