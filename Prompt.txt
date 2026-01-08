@@ -1,5 +1,0 @@
-示例文件: /file
-演示网站链接: https://qbitcapital.xyz
-circle元素MDN文档: https://developer.mozilla.org/zh-CN/docs/Web/SVG/Element/circle
-line元素MDN文档: https://developer.mozilla.org/zh-CN/docs/Web/SVG/Element/line
-GSAP timeline官方文档: https://gsap.com/docs/v3/GSAP/Timeline

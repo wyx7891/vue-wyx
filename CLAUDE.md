@@ -92,7 +92,8 @@ src/
 ## 开发注意事项
 
 ### 样式系统
-- 使用 scoped CSS 避免样式冲突
+- 前项目使用 scoped CSS 避免样式冲突
+- 后续开发使用 tailwindcss v3.4.17
 - 主要使用 CSS Grid 和 Flexbox 布局
 - 响应式设计考虑移动端适配
 
