@@ -297,7 +297,17 @@ const verifyPassword = async () => {
         if (inputElement) {
           gsap.fromTo(inputElement,
             { x: -10 },
-            { x: 10, duration: 0.1, repeat: 3, yoyo: true, ease: 'power1.inOut' }
+            {
+              x: 10,
+              duration: 0.1,
+              repeat: 3,
+              yoyo: true,
+              ease: 'power1.inOut',
+              onComplete: () => {
+                // 确保动画结束后输入框回到原始位置
+                gsap.set(inputElement, { x: 0 });
+              }
+            }
           );
         }
       }
