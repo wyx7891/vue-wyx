@@ -39,6 +39,8 @@ __screenshots__/
 node_modules/
 .trae/rules/project_rules.md
 
-#trae
+#private
 .trae/
 file/
+.claude
+.codex
