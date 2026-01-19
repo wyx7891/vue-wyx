@@ -1,5 +1,5 @@
 <template>
-  <div class="wyx-main-container">
+  <div class="flex justify-center items-center h-screen m-0 bg-gradient-to-br from-rainbow-red via-rainbow-orange via-rainbow-yellow via-rainbow-green via-rainbow-cyan via-rainbow-purple to-rainbow-pink font-['MI_Sans',sans-serif] overflow-hidden relative">
     <Clock />
     <MovingBox
       v-for="(box, index) in boxes"
@@ -10,14 +10,27 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import Clock from '@/components/Clock.vue';
 import MovingBox from '@/components/MovingBox.vue';
 import { useRouter } from 'vue-router';
 
+interface Box {
+  id: number;
+  text: string;
+  isSpecial: boolean;
+  left: number;
+  top: number;
+  dx: number;
+  dy: number;
+  colorIndex: number;
+  direction: number;
+  redirectUrl: string;
+}
+
 const router = useRouter();
-const boxes = ref([]);
+const boxes = ref<Box[]>([]);
 
 const colors = ['#FF6B6B', '#FFA726', '#FFEE58', '#B2FF59', '#66D9EF', '#967ADC', '#DA8FFF'];
 const redirectUrl = 'https://github.com/wyx7891/html';
@@ -46,7 +59,7 @@ onMounted(() => {
   boxes.value = initialBoxes;
 });
 
-const handleRedirect = (url, isSpecial) => {
+const handleRedirect = (url: string, isSpecial: boolean) => {
   if (isSpecial) {
     // 对特殊链接（桃花源）进行认证检查
     const isAuthenticated = localStorage.getItem('auth') === 'true';
@@ -64,17 +77,3 @@ const handleRedirect = (url, isSpecial) => {
 };
 
 </script>
-
-<style scoped>
-.wyx-main-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background: linear-gradient(45deg, #FF6B6B, #FFA726, #FFEE58, #B2FF59, #66D9EF, #967ADC, #DA8FFF);
-  font-family: 'MI Sans', sans-serif;
-  overflow: hidden;
-  position: relative;
-}
-</style>

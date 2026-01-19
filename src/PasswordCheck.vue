@@ -1,34 +1,34 @@
 <template>
   <div
-    class="password-check-container"
+    class="flex justify-center items-center min-h-screen bg-check-bg p-5 relative overflow-hidden"
     ref="containerRef"
     @mousemove="handleMouseMove"
   >
     <!-- Interactive background with animated dots using GSAP -->
-    <div class="background-dots" ref="dotsContainerRef">
-      <svg class="dots-svg" ref="svgRef" width="100%" height="100%"></svg>
+    <div class="absolute top-0 left-0 w-full h-full z-0" ref="dotsContainerRef">
+      <svg class="w-full h-full" ref="svgRef" width="100%" height="100%"></svg>
     </div>
 
     <div
-      class="password-check-box"
+      class="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] p-10 w-full max-w-[400px] text-center relative z-10 transition-[transform,box-shadow] duration-300 overflow-hidden hover:-translate-y-[5px] hover:shadow-[0_10px_30px_rgba(0,0,0,0.15),0_0_25px_rgba(76,175,80,0.4),0_0_50px_rgba(76,175,80,0.3),0_0_80px_rgba(76,175,80,0.2)]"
       role="form"
       aria-labelledby="form-title"
       @mouseenter="spotlightVisible = true"
       @mouseleave="spotlightVisible = false"
     >
-      <div class="mouse-spotlight" :style="spotlightStyle"></div>
-      <h2 id="form-title">访问验证</h2>
-      <p>请输入访问密码</p>
+      <div class="absolute rounded-full pointer-events-none z-[1] mix-blend-screen" :style="spotlightStyle"></div>
+      <h2 id="form-title" class="mb-2.5 text-[#333] text-[1.75rem]">访问验证</h2>
+      <p class="mb-[25px] text-[#666] text-[1.1rem]">请输入访问密码</p>
       <form @submit.prevent="verifyPassword">
-        <div class="input-group">
+        <div class="mb-[25px]">
           <label for="password-input" class="sr-only">密码</label>
           <input
             id="password-input"
             v-model="password"
             type="password"
             placeholder="输入密码"
-            class="password-input"
-            :class="{ 'error': showError }"
+            class="w-full p-[14px] border-2 border-[#e1e5e9] rounded-lg text-base box-border transition-[border-color,box-shadow] duration-300 focus:outline-none focus:border-check-blue focus:shadow-[0_0_0_3px_rgba(0,123,255,0.25)]"
+            :class="{ '!border-check-error': showError }"
             required
             :aria-invalid="showError"
             aria-describedby="error-message"
@@ -36,7 +36,7 @@
           <div
             v-if="showError"
             id="error-message"
-            class="error-message"
+            class="text-check-error text-sm mt-2 text-left pl-0.5"
             role="alert"
           >
             密码错误，请重试
@@ -44,7 +44,7 @@
         </div>
         <button
           type="submit"
-          class="submit-btn"
+          class="w-full p-[14px] bg-check-blue text-white border-none rounded-lg text-base cursor-pointer transition-[background-color,transform] duration-[0.3s,0.2s] font-medium hover:bg-check-blue-dark hover:-translate-y-0.5 active:translate-y-0 disabled:bg-[#6c757d] disabled:cursor-not-allowed"
           :disabled="isVerifying"
         >
           {{ isVerifying ? '验证中...' : '验证' }}
@@ -424,152 +424,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.password-check-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f8f9fa; /* Slightly off-white background for better contrast */
-  padding: 20px;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Container for animated dots */
-.background-dots {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-.dots-svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* Spotlight effect implementation for password check box */
-.password-check-box {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  padding: 40px;
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-  position: relative;
-  z-index: 10;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-}
-
-/* 恢复原始样式并确保相对定位 */
-.password-check-box {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  padding: 40px;
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-  position: relative;
-  z-index: 10;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-}
-
-.password-check-box:hover {
-  transform: translateY(-5px);
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.15),
-    0 0 25px rgba(76, 175, 80, 0.4),
-    0 0 50px rgba(76, 175, 80, 0.3),
-    0 0 80px rgba(76, 175, 80, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Spotlight effect element */
-.mouse-spotlight {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 1;
-  mix-blend-mode: screen;
-}
-
-.password-check-box h2 {
-  margin-bottom: 10px;
-  color: #333;
-  font-size: 1.75rem;
-}
-
-.password-check-box p {
-  margin-bottom: 25px;
-  color: #666;
-  font-size: 1.1rem;
-}
-
-.input-group {
-  margin-bottom: 25px;
-}
-
-.password-input {
-  width: 100%;
-  padding: 14px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
-  font-size: 16px;
-  box-sizing: border-box;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.password-input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-}
-
-.password-input.error {
-  border-color: #e74c3c;
-}
-
-.error-message {
-  color: #e74c3c;
-  font-size: 14px;
-  margin-top: 8px;
-  text-align: left;
-  padding-left: 2px;
-}
-
-.submit-btn {
-  width: 100%;
-  padding: 14px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-  font-weight: 500;
-}
-
-.submit-btn:hover:not(:disabled) {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-}
-
-.submit-btn:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.submit-btn:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
-}
-
 .sr-only {
   position: absolute;
   width: 1px;

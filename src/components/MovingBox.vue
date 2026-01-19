@@ -1,27 +1,45 @@
 <template>
   <div
-    class="moving-text"
-    :class="{ 'special-moving-text': box.isSpecial, 'glow-effect': isMouseClose }"
+    class="absolute py-2.5 px-[15px] rounded-[5px] text-2xl font-bold transition-[background-color] duration-300 opacity-80 cursor-pointer [transform:translateZ(0)] [will-change:transform,left,top,background-color] [backface-visibility:hidden] box-border hover:opacity-100 hover:scale-105 hover:[transform:scale(1.05)_translateZ(0)] hover:shadow-[0_0_10px_rgba(0,0,0,0.3)]"
+    :class="{
+      '!border-[3px] !border-dashed !border-[#FF00FF] !shadow-glow-purple animate-pulse-custom': box.isSpecial,
+      'shadow-glow-green': isMouseClose
+    }"
     :style="{ left: box.left + 'px', top: box.top + 'px', backgroundColor: colors[box.colorIndex] }"
     @click="handleClick"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
     {{ box.text }}
-    <div v-if="box.isSpecial" class="click-progress-container">
-      <div class="click-progress-bar" :style="{ width: clickProgress + '%' }"></div>
+    <div v-if="box.isSpecial" class="absolute -bottom-2.5 left-0 w-full h-[5px] bg-white/50 rounded-[3px] overflow-hidden">
+      <div class="h-full w-0 bg-[#FF00FF] transition-[width] duration-300 ease-[ease]" :style="{ width: clickProgress + '%' }"></div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, onUnmounted, reactive, onBeforeUnmount } from 'vue';
+<script setup lang="ts">
+import { ref, onMounted, reactive, onBeforeUnmount } from 'vue';
 
-const props = defineProps({
-  initialBox: Object
-});
+interface Box {
+  id: number;
+  text: string;
+  isSpecial: boolean;
+  left: number;
+  top: number;
+  dx: number;
+  dy: number;
+  colorIndex: number;
+  direction: number;
+  redirectUrl: string;
+}
 
-const emit = defineEmits(['redirect']);
+const props = defineProps<{
+  initialBox: Box
+}>();
+
+const emit = defineEmits<{
+  redirect: [url: string, isSpecial: boolean]
+}>();
 
 const box = reactive(props.initialBox);
 const colors = ['#FF6B6B', '#FFA726', '#FFEE58', '#B2FF59', '#66D9EF', '#967ADC', '#DA8FFF'];
@@ -29,11 +47,11 @@ const clickProgress = ref(0);
 const isMouseClose = ref(false);
 let clickCount = 0;
 let lastClickTime = 0;
-let resetTimeoutId = null;
-let animationFrameId = null;
+let resetTimeoutId: ReturnType<typeof setTimeout> | null = null;
+let animationFrameId: number | null = null;
 let mouseX = 0;
 let mouseY = 0;
-let mouseMoveHandler = null;
+let mouseMoveHandler: ((e: MouseEvent) => void) | null = null;
 
 const move = () => {
   box.left += box.dx;
@@ -79,7 +97,7 @@ const onMouseLeave = () => {
   isMouseClose.value = false;
 };
 
-const handleMouseMove = (e) => {
+const handleMouseMove = (e: MouseEvent) => {
   mouseX = e.clientX;
   mouseY = e.clientY;
 };
@@ -132,7 +150,9 @@ onMounted(() => {
   const colorInterval = setInterval(changeColor, 500);
 
   onBeforeUnmount(() => {
-    window.removeEventListener('mousemove', mouseMoveHandler);
+    if (mouseMoveHandler) {
+      window.removeEventListener('mousemove', mouseMoveHandler);
+    }
     if (animationFrameId) {
       cancelAnimationFrame(animationFrameId);
     }
@@ -144,70 +164,3 @@ onMounted(() => {
 });
 
 </script>
-
-<style scoped>
-.moving-text {
-  position: absolute;
-  padding: 10px 15px;
-  border-radius: 5px;
-  font-size: 24px;
-  font-weight: bold;
-  transition: background-color 0.3s;
-  opacity: 0.8;
-  cursor: pointer;
-  transform: translateZ(0);
-  will-change: transform, left, top, background-color;
-  backface-visibility: hidden;
-  box-sizing: border-box;
-}
-
-.moving-text:hover {
-  opacity: 1;
-  transform: scale(1.05) translateZ(0);
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
-
-.special-moving-text {
-  border: 3px dashed #FF00FF !important;
-  box-shadow: 0 0 15px rgba(255, 0, 255, 0.7) !important;
-  animation: pulse 1.5s infinite alternate;
-}
-
-.glow-effect {
-  box-shadow:
-    0 0 10px rgba(34, 139, 34, 0.3),
-    0 0 20px rgba(34, 139, 34, 0.3),
-    0 0 30px rgba(34, 139, 34, 0.2),
-    0 0 40px rgba(34, 139, 34, 0.15),
-    0 0 50px rgba(34, 139, 34, 0.1) !important;
-}
-
-.click-progress-container {
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.click-progress-bar {
-  height: 100%;
-  width: 0%;
-  background-color: #FF00FF;
-  transition: width 0.3s ease;
-}
-
-@keyframes pulse {
-  from {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  to {
-    transform: scale(1.1);
-    opacity: 1;
-  }
-}
-</style>

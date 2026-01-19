@@ -1,14 +1,14 @@
 <template>
-  <div id="clock-container">
-    <div id="clock">{{ time }}</div>
+  <div class="relative p-5 bg-white/80 backdrop-blur-[10px] rounded-[15px] shadow-[0_8px_24px_rgba(0,0,0,0.2)] w-[280px] text-center z-[2]">
+    <div class="font-['Arial',sans-serif] text-[64px] text-clock-text [text-shadow:1px_1px_2px_rgba(255,255,255,0.3)] whitespace-nowrap [will-change:contents] leading-none">{{ time }}</div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 
 const time = ref('00:00:00');
-let animationFrameId = null;
+let animationFrameId: number | null = null;
 
 const updateClock = () => {
   const now = new Date();
@@ -33,27 +33,3 @@ onUnmounted(() => {
   }
 });
 </script>
-
-<style scoped>
-#clock-container {
-  position: relative;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  width: 280px;
-  text-align: center;
-  z-index: 2;
-}
-
-#clock {
-  font-family: 'Arial', sans-serif;
-  font-size: 64px;
-  color: #2c3e50;
-  text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
-  white-space: nowrap;
-  will-change: contents;
-  line-height: 1;
-}
-</style>

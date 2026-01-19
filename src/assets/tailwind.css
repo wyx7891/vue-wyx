@@ -1,0 +1,572 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 自定义基础样式 */
+@layer base {
+  body {
+    @apply min-h-screen m-0 p-0;
+  }
+}
+
+/* PeachBlossomSpring 组件样式 */
+@layer components {
+  /* 桃花源CSS - 现代深色主题设计 */
+  .pbs-page-wrapper {
+    @apply flex flex-col min-h-screen;
+  }
+
+  .pbs-page-wrapper body {
+    font-family: 'Noto Sans SC', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    @apply bg-pbs-bg text-pbs-text-primary leading-normal overflow-x-hidden relative min-h-screen opacity-0 transition-opacity duration-[0.8s];
+  }
+
+  .pbs-page-wrapper body.loaded {
+    @apply opacity-100;
+  }
+
+  /* 背景动画效果 */
+  .pbs-page-wrapper body::before {
+    content: '';
+    @apply fixed top-0 left-0 w-full h-full -z-10 pointer-events-none;
+    background: radial-gradient(circle at 50% 50%, rgba(127, 90, 240, 0.1) 0%, transparent 80%);
+  }
+
+  /* 页眉样式 */
+  .pbs-header {
+    @apply text-center relative overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.2)] p-8;
+    background: linear-gradient(135deg, #ff7eb3 0%, #7f5af0 100%);
+  }
+
+  .pbs-header-content {
+    @apply relative z-[1];
+  }
+
+  .pbs-header h1 {
+    @apply text-[2.5rem] font-bold tracking-wide [text-shadow:2px_2px_4px_rgba(0,0,0,0.3)] m-0 inline-flex items-center gap-2;
+  }
+
+  .pbs-header h1 span {
+    @apply text-[1.2rem] font-normal opacity-80 block mt-2;
+  }
+
+  /* 导航栏样式 */
+  .pbs-nav {
+    @apply flex justify-center p-0 sticky top-0 z-[100] shadow-[0_2px_10px_rgba(0,0,0,0.1)];
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .pbs-nav a {
+    @apply text-pbs-text-primary no-underline py-4 px-6 inline-flex items-center gap-2 font-medium relative mx-1;
+  }
+
+  .pbs-nav a i {
+    @apply text-[1.1rem];
+  }
+
+  .pbs-nav a::after {
+    content: '';
+    @apply absolute bottom-0 left-1/2 w-0 h-[3px] bg-pbs-primary transition-all duration-300 -translate-x-1/2;
+  }
+
+  .pbs-nav a:hover {
+    @apply text-pbs-primary bg-transparent;
+  }
+
+  .pbs-nav a:hover::after,
+  .pbs-nav a.active::after {
+    @apply w-4/5;
+  }
+
+  .pbs-nav a.active {
+    @apply text-pbs-primary;
+  }
+
+  .pbs-logout-btn {
+    @apply bg-pbs-accent text-pbs-text-primary rounded-[20px] py-[0.7rem] px-[1.2rem] ml-auto shadow-[0_4px_10px_rgba(44,182,125,0.3)] relative overflow-hidden inline-flex items-center gap-2 font-medium border border-white/10;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  }
+
+  .pbs-logout-btn i {
+    @apply transition-transform duration-300;
+  }
+
+  .pbs-logout-btn:hover {
+    @apply -translate-y-0.5 shadow-[0_6px_15px_rgba(255,82,82,0.4)] rounded-[20px];
+    background-color: #ff5252 !important;
+  }
+
+  .pbs-logout-btn:hover i {
+    @apply -rotate-45;
+  }
+
+  .pbs-logout-btn::after {
+    content: none !important;
+  }
+
+  /* 主要内容区域 */
+  .pbs-main {
+    @apply flex-1 py-8;
+  }
+
+  /* 内容区域样式 */
+  .pbs-content {
+    @apply bg-pbs-surface rounded-xl p-8 my-8 mx-auto max-w-[1000px] shadow-[0_8px_30px_rgba(0,0,0,0.2)] translate-y-0 transition-[transform,box-shadow,opacity] duration-[0.3s,0.3s,0.5s] opacity-0 hidden;
+  }
+
+  .pbs-content.active {
+    @apply block opacity-100;
+    animation: fadeIn 0.8s ease forwards;
+  }
+
+  .pbs-content:hover {
+    @apply -translate-y-[5px] shadow-[0_12px_40px_rgba(0,0,0,0.3)];
+  }
+
+  .pbs-section-header {
+    @apply text-center mb-10;
+  }
+
+  .pbs-section-header h2 {
+    @apply text-pbs-primary mb-2 text-[2rem] relative inline-block;
+  }
+
+  .pbs-section-header h2::after {
+    content: '';
+    @apply absolute -bottom-2 left-1/2 w-[60px] h-[3px] bg-pbs-secondary -translate-x-1/2;
+  }
+
+  .pbs-section-header .subtitle {
+    @apply text-pbs-text-secondary text-[1.1rem];
+  }
+
+  /* 特色卡片 */
+  .pbs-feature-cards {
+    @apply grid gap-8 my-12;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .pbs-card {
+    @apply bg-white/5 rounded-xl p-8 text-center shadow-[0_4px_15px_rgba(0,0,0,0.1)] transition-[transform,box-shadow] duration-300 relative overflow-hidden opacity-0;
+    animation: fadeIn 0.8s ease forwards;
+  }
+
+  .pbs-card:hover {
+    @apply -translate-y-[10px] shadow-[0_8px_25px_rgba(0,0,0,0.2)];
+  }
+
+  .pbs-card::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-[5px];
+    background: linear-gradient(135deg, #ff7eb3 0%, #7f5af0 100%);
+  }
+
+  .pbs-card-icon {
+    @apply text-[2.5rem] mb-6 text-pbs-primary;
+  }
+
+  .pbs-card h3 {
+    @apply text-2xl mb-4 text-pbs-text-primary;
+  }
+
+  .pbs-card p {
+    @apply text-pbs-text-secondary;
+  }
+
+  /* 展示区域 */
+  .pbs-showcase {
+    @apply relative my-12 rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.3)];
+  }
+
+  .pbs-showcase-image {
+    @apply w-full h-auto block transition-transform duration-500;
+  }
+
+  .pbs-showcase:hover .pbs-showcase-image {
+    @apply scale-105;
+  }
+
+  .pbs-showcase-overlay {
+    @apply absolute bottom-0 left-0 w-full p-8 text-pbs-text-primary translate-y-0 transition-transform duration-300;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  }
+
+  .pbs-showcase:hover .pbs-showcase-overlay {
+    @apply -translate-y-[10px];
+  }
+
+  .pbs-showcase-overlay h3 {
+    @apply text-[1.8rem] mb-2;
+  }
+
+  /* 关于我们部分 */
+  .pbs-about-content {
+    @apply grid gap-12 items-center;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pbs-about-text p {
+    @apply mb-6 text-pbs-text-secondary text-[1.1rem];
+  }
+
+  /* 技能条 */
+  .pbs-skills {
+    @apply flex flex-col gap-6;
+  }
+
+  .pbs-skill {
+    @apply flex flex-col gap-2;
+  }
+
+  .pbs-skill-name {
+    @apply font-medium text-pbs-text-primary;
+  }
+
+  .pbs-skill-bar {
+    @apply h-2.5 bg-white/10 rounded-[10px] overflow-hidden;
+  }
+
+  .pbs-skill-level {
+    @apply h-full rounded-[10px] transition-[width] duration-[1.5s];
+    background: linear-gradient(135deg, #ff7eb3 0%, #7f5af0 100%);
+  }
+
+  /* 作品集 */
+  .pbs-portfolio-grid {
+    @apply grid gap-8 mt-12;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  .pbs-portfolio-item {
+    @apply relative rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.2)] cursor-pointer;
+  }
+
+  .pbs-portfolio-item img {
+    @apply w-full h-auto block transition-transform duration-500;
+  }
+
+  .pbs-portfolio-item:hover img {
+    @apply scale-110;
+  }
+
+  /* 图片加载和错误处理 */
+  img.pbs-showcase-image[loading],
+  img[loading] {
+    @apply opacity-60;
+  }
+
+  img.pbs-showcase-image[loaded],
+  img[loaded] {
+    @apply opacity-100 scale-100;
+  }
+
+  img.pbs-showcase-image[error],
+  img[error] {
+    @apply bg-gray-500/30 min-h-[200px] flex items-center justify-center;
+  }
+
+  .pbs-portfolio-overlay {
+    @apply absolute bottom-0 left-0 w-full p-6 text-pbs-text-primary translate-y-full transition-transform duration-300;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  }
+
+  .pbs-portfolio-item:hover .pbs-portfolio-overlay {
+    @apply translate-y-0;
+  }
+
+  .pbs-portfolio-overlay h3 {
+    @apply text-[1.3rem] mb-2;
+  }
+
+  .pbs-portfolio-overlay p {
+    @apply text-sm opacity-80;
+  }
+
+  /* 特别鸣谢部分 */
+  .pbs-thanks-content {
+    @apply grid gap-12 items-center;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pbs-testimonial {
+    @apply relative p-8 bg-white/5 rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.1)];
+  }
+
+  .pbs-quote {
+    @apply text-[2rem] text-pbs-primary opacity-50 mb-4;
+  }
+
+  .pbs-testimonial p {
+    @apply text-[1.1rem] leading-[1.8] mb-6;
+  }
+
+  .pbs-testimonial-author {
+    @apply text-right italic text-pbs-text-secondary;
+  }
+
+  .pbs-partners h3 {
+    @apply text-pbs-text-primary mb-6 text-2xl;
+  }
+
+  .pbs-partner-logos {
+    @apply flex justify-around items-center flex-wrap gap-8;
+  }
+
+  .pbs-partner-logo {
+    @apply text-[3rem] text-pbs-text-secondary transition-[color,transform] duration-300 inline-flex items-center justify-center;
+  }
+
+  .pbs-partner-logo img {
+    @apply h-12 w-auto;
+    fill: currentColor;
+  }
+
+  .pbs-partner-logo:hover {
+    @apply text-pbs-primary scale-110;
+  }
+
+  /* 联系我们部分 */
+  .pbs-contact-container {
+    @apply grid gap-12 mt-8;
+    grid-template-columns: 1fr 2fr;
+  }
+
+  .pbs-contact-info {
+    @apply flex flex-col gap-8;
+  }
+
+  .pbs-info-item {
+    @apply flex items-center gap-4;
+  }
+
+  .pbs-info-item i {
+    @apply text-2xl text-pbs-primary w-10 h-10 flex items-center justify-center bg-white/5 rounded-full;
+  }
+
+  .pbs-contact-form {
+    @apply grid gap-6;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pbs-form-group {
+    @apply relative;
+  }
+
+  .pbs-form-group.full-width {
+    @apply col-span-full;
+  }
+
+  .pbs-contact-form input,
+  .pbs-contact-form textarea {
+    @apply w-full p-4 bg-white/5 border border-white/10 rounded-xl text-pbs-text-primary font-[inherit] text-base;
+  }
+
+  .pbs-contact-form input:focus,
+  .pbs-contact-form textarea:focus {
+    @apply outline-none border-pbs-primary shadow-[0_0_0_2px_rgba(255,126,179,0.2)];
+  }
+
+  .pbs-contact-form button {
+    @apply bg-pbs-accent text-pbs-text-primary border-none py-4 px-8 rounded-xl cursor-pointer font-semibold tracking-wide transition-all duration-300 inline-flex items-center gap-2 justify-center;
+  }
+
+  .pbs-contact-form button:hover {
+    @apply bg-pbs-primary -translate-y-[3px] shadow-[0_5px_15px_rgba(255,126,179,0.4)];
+  }
+
+  .pbs-contact-form button i {
+    @apply transition-transform duration-300;
+  }
+
+  .pbs-contact-form button:hover i {
+    @apply translate-x-[5px];
+  }
+
+  /* 弹窗样式 */
+  .pbs-modal {
+    @apply hidden fixed z-[1001] left-0 top-0 w-full h-full overflow-auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    animation: fadeInModal 0.5s ease forwards;
+  }
+
+  .pbs-modal-content {
+    @apply bg-pbs-surface my-[15%] mx-auto p-8 border border-white/10 rounded-xl w-4/5 max-w-[500px] shadow-[0_10px_30px_rgba(0,0,0,0.3)] text-center relative;
+    animation: slideInModal 0.5s ease forwards;
+  }
+
+  .pbs-modal-content h2 {
+    @apply text-pbs-primary mb-4 text-[1.8rem];
+  }
+
+  .pbs-modal-content p {
+    @apply text-pbs-text-secondary text-[1.1rem] mb-6;
+  }
+
+  .pbs-close-button {
+    @apply text-pbs-text-secondary absolute top-4 right-6 text-[2rem] font-bold transition-colors duration-300;
+  }
+
+  .pbs-close-button:hover,
+  .pbs-close-button:focus {
+    @apply text-pbs-primary no-underline cursor-pointer;
+  }
+
+  @keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideInModal {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* 页脚样式 */
+  .pbs-footer {
+    @apply bg-pbs-surface text-pbs-text-secondary pt-12 pb-4 mt-auto;
+  }
+
+  .pbs-footer-content {
+    @apply flex justify-between items-center max-w-[1200px] mx-auto px-8;
+  }
+
+  .pbs-footer-logo h3 {
+    @apply text-pbs-text-primary text-2xl flex items-center gap-2 mb-2;
+  }
+
+  .pbs-footer-logo p {
+    @apply text-sm;
+  }
+
+  .pbs-footer-links {
+    @apply flex gap-6;
+  }
+
+  .pbs-footer-links a {
+    @apply text-pbs-text-secondary text-2xl transition-[color,transform] duration-300;
+  }
+
+  .pbs-footer-links a:hover {
+    @apply text-pbs-primary -translate-y-[3px];
+  }
+
+  .pbs-footer-bottom {
+    @apply text-center pt-8 mt-8 border-t border-white/10 text-sm;
+  }
+
+  /* 动画效果 */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 响应式设计 */
+  @media screen and (max-width: 992px) {
+    .pbs-about-content,
+    .pbs-thanks-content,
+    .pbs-contact-container {
+      @apply grid-cols-1 gap-8;
+    }
+
+    .pbs-portfolio-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+    .pbs-footer-content {
+      @apply flex-col gap-6 text-center;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .pbs-header h1 {
+      @apply text-[2rem];
+    }
+
+    .pbs-nav {
+      @apply flex-wrap;
+    }
+
+    .pbs-nav a {
+      @apply py-[0.8rem] px-4 mx-[0.1rem] text-sm;
+    }
+
+    .pbs-content {
+      @apply p-6 my-6 mx-4;
+    }
+
+    .pbs-section-header h2 {
+      @apply text-[1.8rem];
+    }
+
+    .pbs-feature-cards {
+      @apply gap-6;
+    }
+
+    .pbs-contact-form {
+      @apply grid-cols-1;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .pbs-header h1 {
+      @apply text-[1.8rem];
+    }
+
+    .pbs-header h1 span {
+      @apply text-base;
+    }
+
+    .pbs-nav a {
+      @apply py-[0.7rem] px-[0.8rem] text-xs;
+    }
+
+    .pbs-nav a i {
+      @apply mr-0;
+    }
+
+    .pbs-section-header h2 {
+      @apply text-2xl;
+    }
+
+    .pbs-card {
+      @apply p-6;
+    }
+
+    .pbs-card-icon {
+      @apply text-[2rem];
+    }
+
+    .pbs-card h3 {
+      @apply text-[1.3rem];
+    }
+
+    .pbs-portfolio-grid {
+      @apply grid-cols-1;
+    }
+  }
+
+  /* 自定义滚动条 */
+  ::-webkit-scrollbar {
+    @apply w-2.5;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-pbs-bg;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-pbs-secondary rounded-[10px];
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-pbs-primary;
+  }
+}
+
+/* 自定义工具类 */
+@layer utilities {
+  /* 可以在这里添加自定义工具类 */
+}
