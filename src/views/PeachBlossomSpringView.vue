@@ -13,6 +13,7 @@
       <a href="#thanks" @click.prevent="showSection('thanks')"><font-awesome-icon :icon="['fas', 'heart']" style="color: #ff7eb3;" /> 特别鸣谢</a>
       <a href="#contact" @click.prevent="showSection('contact')"><font-awesome-icon :icon="['fas', 'envelope']" /> 联系我们</a>
       <a href="#" @click.prevent="logout()" class="logout-btn"><font-awesome-icon :icon="['fas', 'right-from-bracket']" /> 退出登录</a>
+      <a href="#" @click.prevent="downloadFlClash()" class="download-btn"><font-awesome-icon :icon="['fas', 'download']" /> 下载 FL Clash</a>
     </nav>
 
     <main>
@@ -242,11 +243,18 @@ const closeModal = () => {
 };
 
 const logout = () => {
-  // 将localStorage中的auth字段设置为false
   localStorage.setItem('auth', 'false');
-
-  // 重定向到检查页面
   router.push('/check');
+};
+
+const FL_CLASH_URL = import.meta.env.VITE_FL_CLASH_URL || 'https://proxy.gitwarp.top/https://github.com/chen08209/FlClash/releases/download/v0.8.92/FlClash-0.8.92-android-arm64-v8a.apk';
+const downloadFlClash = () => {
+  const a = document.createElement('a');
+  a.href = FL_CLASH_URL;
+  a.download = 'FlClash-0.8.92-android-arm64-v8a.apk';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 };
 
 const showSection = (sectionId: string) => {

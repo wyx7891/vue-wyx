@@ -178,7 +178,42 @@ nav a.active {
 }
 
 .logout-btn::after {
-    content: none !important; /* 移除普通导航项的下划线动画 */
+    content: none !important;
+}
+
+.download-btn {
+    background-color: var(--accent-color);
+    color: var(--text-primary) !important;
+    border-radius: 20px;
+    padding: 0.7rem 1.2rem !important;
+    margin-left: 0.5rem;
+    transition: all 0.2s ease-out;
+    box-shadow: 0 4px 10px rgba(44, 182, 125, 0.3);
+    position: relative;
+    overflow: hidden;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.download-btn i {
+    transition: transform 0.2s ease-out;
+}
+
+.download-btn:hover {
+    background-color: #ff5252;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 82, 82, 0.4);
+}
+
+.download-btn:hover i {
+    transform: rotate(-45deg);
+}
+
+.download-btn::after {
+    content: none !important;
 }
 
 /* 主要内容区域 */
