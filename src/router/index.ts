@@ -21,6 +21,11 @@ const router = createRouter({
       path: '/check',
       name: 'password-check',
       component: () => import('../PasswordCheck.vue')
+    },
+    {
+      path: '/91',
+      name: 'blog-list',
+      component: () => import('../views/BlogListView.vue')
     }
   ]
 })

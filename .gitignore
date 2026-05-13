@@ -42,5 +42,8 @@ node_modules/
 #private
 .trae/
 /file
-/.codex
-/.claude
+.qoder/
+.codex/
+.claude/
+mirror/
+.opencode/
