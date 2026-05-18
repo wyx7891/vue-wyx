@@ -1,11 +1,13 @@
 <template>
-  <div id="clock-container">
+  <div id="clock-container" @click="$emit('pause')">
     <div id="clock">{{ time }}</div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+
+defineEmits(['pause']);
 
 const time = ref('00:00:00');
 let animationFrameId = null;

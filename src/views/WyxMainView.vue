@@ -1,10 +1,11 @@
 <template>
   <div class="wyx-main-container">
-    <Clock />
+    <Clock @pause="handlePause" />
     <MovingBox
       v-for="(box, index) in boxes"
       :key="index"
       :initial-box="box"
+      :paused="isPaused"
       @redirect="handleRedirect"
     />
   </div>
@@ -18,6 +19,19 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const boxes = ref([]);
+const isPaused = ref(false);
+let pauseTimeoutId = null;
+
+const handlePause = () => {
+  isPaused.value = true;
+  if (pauseTimeoutId) {
+    clearTimeout(pauseTimeoutId);
+  }
+  pauseTimeoutId = setTimeout(() => {
+    isPaused.value = false;
+    pauseTimeoutId = null;
+  }, 3000);
+};
 
 const colors = ['#FF6B6B', '#FFA726', '#FFEE58', '#B2FF59', '#66D9EF', '#967ADC', '#DA8FFF'];
 const redirectUrl = 'https://github.com/wyx7891/html';
@@ -25,7 +39,7 @@ const specialRedirectUrl = '/wyx/peach-blossom-spring';
 
 onMounted(() => {
   const initialBoxes = [];
-  const NUM_ELEMENTS = 5;
+  const NUM_ELEMENTS = 3;
   const initialMargin = 100;
 
   for (let i = 0; i < NUM_ELEMENTS; i++) {

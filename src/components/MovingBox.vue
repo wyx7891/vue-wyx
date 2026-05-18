@@ -18,7 +18,8 @@
 import { ref, onMounted, onUnmounted, reactive, onBeforeUnmount } from 'vue';
 
 const props = defineProps({
-  initialBox: Object
+  initialBox: Object,
+  paused: Boolean
 });
 
 const emit = defineEmits(['redirect']);
@@ -36,18 +37,19 @@ let mouseY = 0;
 let mouseMoveHandler = null;
 
 const move = () => {
-  box.left += box.dx;
-  box.top += box.dy;
+  if (!props.paused) {
+    box.left += box.dx;
+    box.top += box.dy;
 
-  if (box.left < 0 || box.left + 100 > window.innerWidth) {
-    box.dx *= -1;
-  }
-  if (box.top < 0 || box.top + 50 > window.innerHeight) {
-    box.dy *= -1;
-  }
+    if (box.left < 0 || box.left + 100 > window.innerWidth) {
+      box.dx *= -1;
+    }
+    if (box.top < 0 || box.top + 50 > window.innerHeight) {
+      box.dy *= -1;
+    }
 
-  // 检查鼠标距离
-  checkMouseDistance();
+    checkMouseDistance();
+  }
 
   animationFrameId = requestAnimationFrame(move);
 };
@@ -171,6 +173,7 @@ onMounted(() => {
   border: 3px dashed #FF00FF !important;
   box-shadow: 0 0 15px rgba(255, 0, 255, 0.7) !important;
   animation: pulse 1.5s infinite alternate;
+  z-index: 9999 !important;
 }
 
 .glow-effect {
